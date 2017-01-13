@@ -43,6 +43,7 @@ PROCEDURE sp_addUser(
     END;
 
     SET o_code = 0;
+    SET o_message = "OK";
 
     SET i_password = SHA2(CONCAT(i_password, l_salt), 256);
     INSERT INTO tblUser (idUser, dtPassword, dtSalt, dtIsAdmin)

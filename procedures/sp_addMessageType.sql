@@ -36,7 +36,7 @@ PROCEDURE sp_addMessageType(
     END;
 
     SET o_code = 0;
-    SET o_message = "";
+    SET o_message = "OK";
 
     INSERT INTO tblMessageType (idMessageType, fiLanguage, dtName)
       VALUES (i_idMessageType, i_idLanguage, i_name);

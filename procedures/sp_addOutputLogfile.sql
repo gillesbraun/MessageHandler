@@ -23,6 +23,10 @@ PROCEDURE sp_addOutputLogfile(
   OUT o_message     VARCHAR(100))
   SQL SECURITY DEFINER
   BEGIN
+
+    SET o_code = 0;
+    SET o_message = "OK";
+
     INSERT INTO tblLogfile (fiOutput, dtPath) VALUES
       (i_idOutput, i_dtPath);
   END ??

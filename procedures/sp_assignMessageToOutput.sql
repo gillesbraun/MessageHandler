@@ -41,7 +41,7 @@ PROCEDURE sp_assignMessageToOutput(
     END;
 
     SET o_code = 0;
-    SET o_message = "";
+    SET o_message = "OK";
 
     INSERT INTO tblMessageOutput (fiMessage, fiOutput) VALUES
     (i_message, i_output);

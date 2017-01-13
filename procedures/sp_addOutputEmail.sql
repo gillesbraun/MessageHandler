@@ -25,6 +25,10 @@ PROCEDURE sp_addOutputEmail(
   OUT o_message     VARCHAR(100))
   SQL SECURITY DEFINER
   BEGIN
+
+    SET o_code = 0;
+    SET o_message = "OK";
+
     INSERT INTO tblEmail (fiOutput, dtSubject, dtRecipient) VALUES
       (i_idOutput, i_dtSubject, i_dtRecipient);
   END ??

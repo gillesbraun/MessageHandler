@@ -29,6 +29,10 @@ PROCEDURE sp_addOutputTwitter(
   OUT o_message     VARCHAR(100))
   SQL SECURITY DEFINER
   BEGIN
+
+    SET o_code = 0;
+    SET o_message = "OK";
+
     INSERT INTO tblOutputTwitter(dtConsumerKey, dtConsumerSecret, dtAccessToken, dtAccessTokenSecret, fiOutput) VALUE
       (i_consumerKey, i_consumerSecret, i_accessToken, i_accessTokenSecret, i_output);
   END ??
