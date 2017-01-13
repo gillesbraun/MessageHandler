@@ -43,7 +43,7 @@ PROCEDURE sp_addMessageInLanguage(
     END;
 
     SET o_code = 0;
-    SET o_message = "";
+    SET o_message = "OK";
 
     INSERT INTO tblMessageInLanguage (fiMessage, fiLanguage, dtMessageInLanguage)
     VALUES (i_idMessage, i_idLanguage, i_message);
