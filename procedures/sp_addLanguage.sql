@@ -36,9 +36,6 @@ PROCEDURE sp_addLanguage(
   OUT o_message     VARCHAR(100))
   SQL SECURITY DEFINER
   BEGIN
-    DECLARE deadlockOccured INT DEFAULT 0;
-    DECLARE nbrOfAttempts INT DEFAULT 0;
-
     DECLARE dup_key CONDITION FOR 1062;
     DECLARE CONTINUE HANDLER FOR dup_key
     BEGIN
@@ -46,45 +43,11 @@ PROCEDURE sp_addLanguage(
       CALL sp_getMsg(2, 'en', '', @msg);
       SET o_message = @msg;
     END;
+
     SET o_code = 0;
-    SET o_message = "";
+    SET o_message = "OK";
 
-    -- Start a loop to try the transaction 3 times
-    tra_loop: WHILE (nbrOfAttempts < 3) DO
-      BEGIN
-        -- Define an exit handler when deadlock occurs.
-        DECLARE deadlock CONDITION FOR 1213;
-        DECLARE EXIT HANDLER FOR deadlock
-          BEGIN
-            SET deadlockOccured = 1;
-            ROLLBACK;
-          END;
-
-
-        START TRANSACTION;
-        -- Do the action
-
-        INSERT INTO tblLanguage (idLanguage, dtName, dtLocalizedName) VALUES
-          (i_idLanguage, i_dtName, i_dtLocalName);
-
-        COMMIT;
-
-      END;
-      -- End of the block where deadlocks can occur
-
-      IF deadlockOccured = 0 THEN
-        -- Leave when no deadlock occured
-        LEAVE tra_loop;
-      ELSE
-        -- Try again if deadlock occured
-        SET nbrOfAttempts = nbrOfAttempts + 1;
-      END IF;
-    END WHILE tra_loop;
-
-    IF deadlockOccured = 1 THEN
-      CALL sp_getMsg(1, 'en', '3', @msg);
-      SET o_message = @msg;
-      SET o_code = 1213;
-    END IF;
+    INSERT INTO tblLanguage (idLanguage, dtName, dtLocalizedName) VALUES
+      (i_idLanguage, i_dtName, i_dtLocalName);
 
   END ??
