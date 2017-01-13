@@ -43,7 +43,9 @@ PROCEDURE sp_addMessage(
     END;
 
     SET o_code = 0;
-    SET o_message = "";
+    SET o_message = "OK";
+
+    START TRANSACTION;
 
     INSERT INTO tblMessage (dtDescription, fiMessageType, fiUser)
     VALUES (i_desc, i_idMessageType, i_idUser);
@@ -52,5 +54,7 @@ PROCEDURE sp_addMessage(
     FROM tblMessage
     WHERE dtDescription = i_desc
     INTO o_id;
+
+    COMMIT;
 
   END ??
