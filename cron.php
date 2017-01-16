@@ -1,4 +1,7 @@
 <?php
+$user = "MessageHandler";
+$password = "MSGHANDLER";
+
 date_default_timezone_set('Europe/Luxembourg');
 
 require "vendor/autoload.php";
@@ -103,7 +106,7 @@ function doTwitters(MySQLi $mysqli) {
 
 
 //start sql conncetion
-$mysqli = @new MySQLi('127.0.0.1', 'root', '', 'MessageHandler');
+$mysqli = @new MySQLi('127.0.0.1', $user, $password, 'MessageHandler');
 if(!empty($mysqli->connect_error)) {
     die('Connection error: '.$mysqli->connect_error."\n");
 }
