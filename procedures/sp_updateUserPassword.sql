@@ -15,7 +15,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_updateUserPassword(
   IN i_idUser VARCHAR(32),
   IN i_pass   VARCHAR(32))

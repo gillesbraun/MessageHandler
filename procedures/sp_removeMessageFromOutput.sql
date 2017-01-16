@@ -15,7 +15,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_removeMessageFromOutput(
   IN  i_idMessage INT UNSIGNED,
   IN  i_idOutput  INT UNSIGNED)

@@ -21,7 +21,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_addOutput(
   IN  i_idUser     VARCHAR(32),
   IN  i_idLanguage CHAR(2),

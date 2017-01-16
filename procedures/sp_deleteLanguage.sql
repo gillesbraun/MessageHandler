@@ -15,7 +15,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_deleteLanguage(
   IN  i_idLanguage  CHAR(2))
   SQL SECURITY DEFINER

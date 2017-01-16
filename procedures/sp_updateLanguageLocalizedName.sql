@@ -16,7 +16,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_updateLanguageLocalizedName(
   IN i_idLanguage CHAR(2),
   IN i_name   VARCHAR(100))

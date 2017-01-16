@@ -15,7 +15,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_deleteMessage(
   IN  i_idMessage  INT UNSIGNED)
   SQL SECURITY DEFINER

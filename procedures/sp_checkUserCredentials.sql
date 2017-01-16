@@ -23,7 +23,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_checkUserCredentials(
   IN  i_username VARCHAR(32),
   IN  i_password VARCHAR(64),

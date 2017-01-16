@@ -15,7 +15,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_updateMessageDescription(
   IN i_idMessage   INT UNSIGNED,
   IN i_desc VARCHAR(255))

@@ -17,7 +17,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getLanguagesNotUsedInMessage(
   IN  i_idMessage INT UNSIGNED,
   OUT o_out       TEXT)

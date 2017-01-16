@@ -14,7 +14,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getOutputsLogfile(
   IN  i_idOutput INT UNSIGNED,
   OUT o_out TEXT

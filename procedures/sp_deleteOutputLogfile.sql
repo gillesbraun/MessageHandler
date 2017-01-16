@@ -14,7 +14,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_deleteOutputLogfile(
   IN  i_idOutput INT UNSIGNED)
   SQL SECURITY DEFINER

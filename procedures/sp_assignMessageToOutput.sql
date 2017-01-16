@@ -25,7 +25,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_assignMessageToOutput(
   IN i_message INT UNSIGNED,
   IN i_output  INT UNSIGNED,

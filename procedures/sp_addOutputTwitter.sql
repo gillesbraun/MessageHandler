@@ -18,7 +18,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_addOutputTwitter(
   IN i_output INT UNSIGNED,
   IN i_consumerKey CHAR(25),

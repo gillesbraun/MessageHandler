@@ -16,7 +16,7 @@
 | sp_getMessageInLanguage
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getMessageTypeOfMessage(
   IN  i_idMessage INT UNSIGNED,
   OUT o_msgtype   CHAR(1))

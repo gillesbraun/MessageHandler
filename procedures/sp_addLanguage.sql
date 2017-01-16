@@ -27,7 +27,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_addLanguage(
   IN  i_idLanguage  CHAR(2),
   IN  i_dtName      VARCHAR(100),

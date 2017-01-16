@@ -16,7 +16,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getPendingLog(OUT o_out TEXT)
   SQL SECURITY DEFINER
   BEGIN

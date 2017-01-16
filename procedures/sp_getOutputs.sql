@@ -14,7 +14,7 @@
 |
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getOutputs(OUT o_out TEXT)
   SQL SECURITY DEFINER
   BEGIN

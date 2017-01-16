@@ -17,7 +17,7 @@
 | sp_handleOutput
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getLanguageOfOutput(
   IN  i_idOutput INT UNSIGNED,
   OUT o_lang     CHAR(2))

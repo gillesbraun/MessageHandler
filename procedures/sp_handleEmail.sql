@@ -15,7 +15,7 @@
 | sp_handleOutput
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_handleEmail(
   IN i_idOutput INT UNSIGNED,
   IN i_body     TEXT)

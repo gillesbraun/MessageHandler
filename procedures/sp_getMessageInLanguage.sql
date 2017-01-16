@@ -20,7 +20,7 @@
 | 
 |---------------------------------------------------------------------------*/
 DELIMITER ??
-CREATE DEFINER = 'MessageHandler'@'localhost'
+CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getMessageInLanguage(
   IN  i_idMessage  INT UNSIGNED,
   IN  i_idLanguage CHAR(2),
