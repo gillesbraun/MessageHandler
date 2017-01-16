@@ -28,8 +28,11 @@ PROCEDURE sp_getMsg(
   OUT o_out        VARCHAR(500))
   SQL SECURITY DEFINER
   BEGIN
+    START TRANSACTION;
+
     CALL sp_getMessageInLanguage(i_idMessage, i_idLanguage, i_replace, @msg);
     SET o_out = @msg;
     CALL sp_handleOutput(i_idMessage, i_replace);
 
+    COMMIT;
   END ??
