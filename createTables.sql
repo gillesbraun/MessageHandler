@@ -52,13 +52,13 @@ CREATE TABLE tblOutput (
     ON DELETE CASCADE
 );
 
-CREATE TABLE tblEmail (
-  idEmail     INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE tblOutputEmail (
+  idOutputEmail     INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   fiOutput    INT UNSIGNED NOT NULL,
   dtSubject   VARCHAR(100) NOT NULL,
   dtRecipient VARCHAR(50)  NOT NULL,
 
-  CONSTRAINT fk_tblEmail_tblOutput
+  CONSTRAINT fk_tblOutputEmail_tblOutput
   FOREIGN KEY (fiOutput)
   REFERENCES tblOutput (idOutput)
     ON UPDATE CASCADE
@@ -67,7 +67,7 @@ CREATE TABLE tblEmail (
 
 CREATE TABLE tblPendingEmail (
   idPendingLog INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  fiEmail INT UNSIGNED NOT NULL,
+  fiOutputEmail INT UNSIGNED NOT NULL,
   dtBody TEXT NOT NULL
 );
 

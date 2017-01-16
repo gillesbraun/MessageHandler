@@ -29,6 +29,6 @@ PROCEDURE sp_addOutputEmail(
     SET o_code = 0;
     SET o_message = "OK";
 
-    INSERT INTO tblEmail (fiOutput, dtSubject, dtRecipient) VALUES
+    INSERT INTO tblOutputEmail (fiOutput, dtSubject, dtRecipient) VALUES
       (i_idOutput, i_dtSubject, i_dtRecipient);
   END ??

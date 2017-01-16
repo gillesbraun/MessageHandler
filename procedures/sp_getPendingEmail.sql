@@ -21,8 +21,8 @@ PROCEDURE sp_getPendingEmail(OUT o_out TEXT)
     SELECT GROUP_CONCAT(
         CONCAT_WS('~', idPendingLog, dtRecipient, dtSubject, dtBody)
         SEPARATOR '^')
-    FROM tblPendingEmail, tblEmail
-    WHERE idEmail = fiEmail
+    FROM tblPendingEmail, tblOutputEmail
+    WHERE idOutputEmail = fiOutputEmail
     INTO o_out;
     DELETE FROM tblPendingEmail;
   END ??

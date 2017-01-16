@@ -45,7 +45,7 @@ PROCEDURE sp_handleOutput(
       CALL sp_getLanguageOfOutput(l_idOutput, @lang);
       CALL sp_getMessageInLanguage(i_idMessage, @lang, i_replace, @msg);
 
-      SELECT COUNT(*) FROM tblEmail WHERE fiOutput = l_idOutput INTO l_num_emails;
+      SELECT COUNT(*) FROM tblOutputEmail WHERE fiOutput = l_idOutput INTO l_num_emails;
       IF l_num_emails > 0 THEN
         CALL sp_handleLogfile(l_idOutput, @msg);
       END IF;

@@ -24,8 +24,8 @@ PROCEDURE sp_handleEmail(
     DECLARE l_emailID INT UNSIGNED;
     DECLARE l_notfound TINYINT DEFAULT FALSE;
     DECLARE cur CURSOR FOR SELECT
-                             idEmail
-                           FROM tblEmail
+                             idOutputEmail
+                           FROM tblOutputEmail
                            WHERE fiOutput = i_idOutput;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_notfound = TRUE;
 
@@ -39,7 +39,7 @@ PROCEDURE sp_handleEmail(
 
       IF (l_emailID IS NOT NULL)
       THEN
-        INSERT INTO tblPendingEmail(fiEmail, dtBody) VALUES (l_emailID, i_body);
+        INSERT INTO tblPendingEmail(fiOutputEmail, dtBody) VALUES (l_emailID, i_body);
       END IF;
     END LOOP;
 

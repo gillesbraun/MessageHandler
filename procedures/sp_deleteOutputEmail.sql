@@ -7,7 +7,7 @@
 |
 | Parameters :
 | ------------
-|  IN  : idEmail : The ID of the output you want to remove
+|  IN  : idOutputEmail : The ID of the output you want to remove
 |
 | List of callers : (this routine is called by the following routines)
 | -----------------
@@ -19,5 +19,5 @@ PROCEDURE sp_deleteOutputEmail(
   IN  i_idOutput INT UNSIGNED)
   SQL SECURITY DEFINER
   BEGIN
-    DELETE FROM tblEmail WHERE idEmail = i_idOutput;
+    DELETE FROM tblOutputEmail WHERE idOutputEmail = i_idOutput;
   END ??
