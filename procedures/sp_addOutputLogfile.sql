@@ -27,6 +27,6 @@ PROCEDURE sp_addOutputLogfile(
     SET o_code = 0;
     SET o_message = "OK";
 
-    INSERT INTO tblLogfile (fiOutput, dtPath) VALUES
+    INSERT INTO tblOutputLogfile (fiOutput, dtPath) VALUES
       (i_idOutput, i_dtPath);
   END ??

@@ -7,7 +7,7 @@
 |
 | Parameters :
 | ------------
-|  IN  : idLogfile : The ID of the output you want to remove
+|  IN  : idOutputLogfile : The ID of the output you want to remove
 |
 | List of callers : (this routine is called by the following routines)
 | -----------------
@@ -19,5 +19,5 @@ PROCEDURE sp_deleteOutputLogfile(
   IN  i_idOutput INT UNSIGNED)
   SQL SECURITY DEFINER
   BEGIN
-    DELETE FROM tblLogfile WHERE idLogfile = i_idOutput;
+    DELETE FROM tblOutputLogfile WHERE idOutputLogfile = i_idOutput;
   END ??

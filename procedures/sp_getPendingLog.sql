@@ -23,8 +23,8 @@ PROCEDURE sp_getPendingLog(OUT o_out TEXT)
     SELECT GROUP_CONCAT(
         CONCAT_WS('~', idPendingLog, dtPath, dtMsg)
         SEPARATOR '^')
-    FROM tblPendingLog, tblLogfile
-    WHERE idLogfile = fiLogfile
+    FROM tblPendingLog, tblOutputLogfile
+    WHERE idOutputLogfile = fiOutputLogfile
     INTO o_out;
 
     DELETE FROM tblPendingLog;

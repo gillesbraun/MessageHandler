@@ -77,12 +77,12 @@ CREATE TABLE tblPendingEmail (
     ON DELETE CASCADE
 );
 
-CREATE TABLE tblLogfile (
-  idLogfile INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE tblOutputLogfile (
+  idOutputLogfile INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   fiOutput  INT UNSIGNED NOT NULL,
   dtPath    VARCHAR(255) NOT NULL,
 
-  CONSTRAINT fk_tblLogfile_tblOutput
+  CONSTRAINT fk_tblOutputLogfile_tblOutput
   FOREIGN KEY (fiOutput)
   REFERENCES tblOutput (idOutput)
     ON UPDATE CASCADE
@@ -92,11 +92,11 @@ CREATE TABLE tblLogfile (
 CREATE TABLE tblPendingLog (
   idPendingLog INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   dtMsg TEXT NOT NULL,
-  fiLogfile INT UNSIGNED NOT NULL,
+  fiOutputLogfile INT UNSIGNED NOT NULL,
 
-  CONSTRAINT fk_tblPendingLog_tblLogfile
-  FOREIGN KEY (fiLogfile)
-  REFERENCES tblLogfile (idLogfile)
+  CONSTRAINT fk_tblPendingLog_tblOutputLogfile
+  FOREIGN KEY (fiOutputLogfile)
+  REFERENCES tblOutputLogfile (idOutputLogfile)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );

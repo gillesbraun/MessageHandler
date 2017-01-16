@@ -50,7 +50,7 @@ PROCEDURE sp_handleOutput(
         CALL sp_handleLogfile(l_idOutput, @msg);
       END IF;
 
-      SELECT COUNT(*) FROM tblLogfile WHERE fiOutput = l_idOutput INTO l_num_logs;
+      SELECT COUNT(*) FROM tblOutputLogfile WHERE fiOutput = l_idOutput INTO l_num_logs;
       IF l_num_logs > 0 THEN
         CALL sp_handleEmail(l_idOutput, @msg);
       END IF;

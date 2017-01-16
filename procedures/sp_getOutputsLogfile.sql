@@ -22,9 +22,9 @@ PROCEDURE sp_getOutputsLogfile(
   SQL SECURITY DEFINER
   BEGIN
     SELECT GROUP_CONCAT(
-        CONCAT_WS('~', idLogfile, dtPath)
+        CONCAT_WS('~', idOutputLogfile, dtPath)
         SEPARATOR '^')
-    FROM tblLogfile
+    FROM tblOutputLogfile
     WHERE fiOutput = i_idOutput
     INTO o_out;
   END ??

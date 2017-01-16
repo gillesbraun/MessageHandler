@@ -23,7 +23,7 @@ PROCEDURE sp_handleLogfile(
   BEGIN
     DECLARE l_notfound TINYINT DEFAULT FALSE;
     DECLARE l_output INT UNSIGNED;
-    DECLARE cur CURSOR FOR SELECT idLogfile FROM tblLogfile WHERE fiOutput = i_idOutput;
+    DECLARE cur CURSOR FOR SELECT idOutputLogfile FROM tblOutputLogfile WHERE fiOutput = i_idOutput;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_notfound = 1;
 
     OPEN cur;
@@ -33,7 +33,7 @@ PROCEDURE sp_handleLogfile(
         LEAVE cur_loop;
       END IF;
 
-      INSERT INTO tblPendingLog(fiLogfile, dtMsg) VALUES (l_output, i_msg);
+      INSERT INTO tblPendingLog(fiOutputLogfile, dtMsg) VALUES (l_output, i_msg);
 
     END LOOP;
     CLOSE cur;
