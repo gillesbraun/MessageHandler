@@ -68,7 +68,13 @@ CREATE TABLE tblOutputEmail (
 CREATE TABLE tblPendingEmail (
   idPendingLog INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   fiOutputEmail INT UNSIGNED NOT NULL,
-  dtBody TEXT NOT NULL
+  dtBody TEXT NOT NULL,
+
+  CONSTRAINT fk_tblPendingEmail_tblOutputEmail
+  FOREIGN KEY (fiOutputEmail)
+  REFERENCES tblOutputEmail (idOutputEmail)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 CREATE TABLE tblLogfile (
