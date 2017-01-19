@@ -1,5 +1,5 @@
 composer.phar
-/vendor/
+/build/vendor/
 
 /.idea/
 MessageHandler.sql
