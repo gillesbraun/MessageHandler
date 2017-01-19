@@ -37,7 +37,8 @@ PROCEDURE sp_getMessageInLanguage(
     SELECT dtMessageInLanguage
     FROM tblMessageInLanguage
     WHERE fiMessage = i_idMessage AND fiLanguage = i_idLanguage
-    INTO l_message;
+    INTO l_message
+    LOCK IN SHARE MODE;
 
     IF ( l_message IS NULL ) THEN
       SET o_out = CONCAT('FATAL ERROR: Message has no translation for language ', i_idLanguage, '!');
