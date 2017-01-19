@@ -21,27 +21,8 @@ PROCEDURE sp_handleEmail(
   IN i_body     TEXT)
   SQL SECURITY DEFINER
   BEGIN
-    DECLARE l_emailID INT UNSIGNED;
-    DECLARE l_notfound TINYINT DEFAULT FALSE;
-    DECLARE cur CURSOR FOR SELECT
-                             idOutputEmail
-                           FROM tblOutputEmail
-                           WHERE fiOutput = i_idOutput;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_notfound = TRUE;
-
-    OPEN cur;
-    cur_loop: LOOP
-      FETCH cur INTO l_emailID;
-
-      IF (l_notfound = 1) THEN
-        LEAVE cur_loop;
-      END IF;
-
-      IF (l_emailID IS NOT NULL)
-      THEN
-        INSERT INTO tblPendingEmail(fiOutputEmail, dtBody) VALUES (l_emailID, i_body);
-      END IF;
-    END LOOP;
-
-    CLOSE cur;
+    INSERT INTO tblPendingEmail(dtBody, fiOutputEmail)
+      SELECT i_body, idOutputEmail
+      FROM tblOutputEmail
+      WHERE fiOutput = i_idOutput;
   END ??
