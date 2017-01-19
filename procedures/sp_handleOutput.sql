@@ -12,7 +12,7 @@
 |
 | List of callers : (this routine is called by the following routines)
 | -----------------
-| sp_getMessageInLanguage
+| sp_getMsg
 |---------------------------------------------------------------------------*/
 DELIMITER ??
 CREATE DEFINER = 'MsgHandler'@'localhost'
