@@ -4,3 +4,4 @@ composer.phar
 /.idea/
 MessageHandler.sql
 .DS_STORE
+/build

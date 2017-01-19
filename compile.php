@@ -10,4 +10,10 @@ for($i = 2; $i < sizeof($files); $i++) {
 }
 $sql .= file_get_contents('fillWithData.sql');
 
-file_put_contents('MessageHandler.sql', $sql);
+if(!is_dir('build')) {
+    mkdir('build');
+}
+$path = 'build/';
+file_put_contents($path.'MessageHandler.sql', $sql);
+copy('composer.json', $path.'composer.json');
+copy('cron.php', $path.'cron.php');

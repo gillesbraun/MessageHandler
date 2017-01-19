@@ -1,0 +1,10 @@
+image: php:5.6-cli
+
+build:
+  stage: build
+  script:
+    - php -f compile.php
+  artifacts:
+    name: "MessageHandler-dist"
+    paths:
+      - "build/*"
