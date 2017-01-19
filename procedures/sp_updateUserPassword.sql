@@ -21,9 +21,18 @@ PROCEDURE sp_updateUserPassword(
   IN i_pass   VARCHAR(32))
   SQL SECURITY DEFINER
   BEGIN
+    START TRANSACTION;
+
     DECLARE l_salt CHAR(64);
-    SELECT dtSalt FROM tblUser WHERE idUser = i_idUser INTO l_salt;
+    SELECT dtSalt
+      FROM tblUser
+      WHERE idUser = i_idUser
+      INTO l_salt
+      LOCK IN SHARE MODE;
+
     UPDATE tblUser
-    SET dtPassword = SHA2(CONCAT(i_pass, l_salt), 256)
-    WHERE idUser = i_idUser;
+      SET dtPassword = SHA2(CONCAT(i_pass, l_salt), 256)
+      WHERE idUser = i_idUser;
+
+    COMMIT;
   END ??
