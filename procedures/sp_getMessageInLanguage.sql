@@ -5,6 +5,8 @@
 |
 | Description : Gets a message translation from the DB and replaces the placeholders
 |               with the given placeholder parameters.
+|               No transaction here because it is called by procedures that already
+|               have open transactions.
 |
 | Parameters :
 | ------------
@@ -17,7 +19,7 @@
 |
 | List of callers : (this routine is called by the following routines)
 | -----------------
-| 
+| sp_getMsg, sp_handleOutput
 |---------------------------------------------------------------------------*/
 DELIMITER ??
 CREATE DEFINER = 'MsgHandler'@'localhost'
@@ -31,8 +33,6 @@ PROCEDURE sp_getMessageInLanguage(
     DECLARE l_positionM, l_positionR INT;
     DECLARE l_message VARCHAR(500);
     DECLARE l_rep VARCHAR(500);
-
-    START TRANSACTION;
 
     SELECT dtMessageInLanguage
     FROM tblMessageInLanguage
@@ -68,6 +68,4 @@ PROCEDURE sp_getMessageInLanguage(
       CALL sp_getMessageTypeInLanguage(@type, i_idLanguage, @typelang);
       SET o_out = CONCAT(IFNULL(CONCAT(@typelang, ': '), ''),l_message);
     END IF;
-
-    COMMIT;
   END ??
