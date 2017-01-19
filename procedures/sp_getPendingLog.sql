@@ -20,12 +20,17 @@ CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getPendingLog(OUT o_out TEXT)
   SQL SECURITY DEFINER
   BEGIN
+    START TRANSACTION;
+
     SELECT GROUP_CONCAT(
         CONCAT_WS('~', idPendingLog, dtPath, dtMsg)
         SEPARATOR '^')
     FROM tblPendingLog, tblOutputLogfile
     WHERE idOutputLogfile = fiOutputLogfile
-    INTO o_out;
+    INTO o_out
+    FOR UPDATE;
 
     DELETE FROM tblPendingLog;
+
+    COMMIT;
   END ??

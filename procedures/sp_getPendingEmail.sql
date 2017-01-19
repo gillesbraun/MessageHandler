@@ -18,11 +18,17 @@ CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getPendingEmail(OUT o_out TEXT)
   SQL SECURITY DEFINER
   BEGIN
+    START TRANSACTION;
+
     SELECT GROUP_CONCAT(
         CONCAT_WS('~', idPendingLog, dtRecipient, dtSubject, dtBody)
         SEPARATOR '^')
     FROM tblPendingEmail, tblOutputEmail
     WHERE idOutputEmail = fiOutputEmail
-    INTO o_out;
+    INTO o_out
+    FOR UPDATE;
+
     DELETE FROM tblPendingEmail;
+
+    COMMIT;
   END ??

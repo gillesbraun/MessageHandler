@@ -19,12 +19,17 @@ CREATE DEFINER = 'MsgHandler'@'localhost'
 PROCEDURE sp_getPendingTwitter(OUT o_out TEXT)
   SQL SECURITY DEFINER
   BEGIN
+    START TRANSACTION;
+
     SELECT GROUP_CONCAT(
         CONCAT_WS('~', dtConsumerKey, dtConsumerSecret, dtAccessToken, dtAccessTokenSecret, dtMessage)
         SEPARATOR '^')
     FROM tblPendingTwitter, tblOutputTwitter
     WHERE idOutputTwitter = fiOutputTwitter
-    INTO o_out;
+    INTO o_out
+    FOR UPDATE;
 
     DELETE FROM tblPendingTwitter;
+
+    COMMIT;
   END ??
