@@ -1,19 +1,52 @@
 <?php
-$sql = file_get_contents('initDB.sql');
-$sql .= file_get_contents('createUser.sql');
-$sql .= file_get_contents('createTables.sql');
-
-$files = scandir('procedures');
-for($i = 2; $i < sizeof($files); $i++) {
-    if(substr($files[$i], strlen($files[$i])-3) === "sql")
-        $sql .= file_get_contents('procedures/' . $files[$i]);
-}
-$sql .= file_get_contents('fillWithData.sql');
-
+// Create build directory
 if(!is_dir('build')) {
     mkdir('build');
 }
 $path = 'build/';
-file_put_contents($path.'MessageHandler.sql', $sql);
-copy('composer.json', $path.'composer.json');
-copy('cron.php', $path.'cron.php');
+
+// Compile SQL
+compileSQL($path);
+
+// Copy additional files to build dir
+copyFilesToBuild($path);
+
+
+// Functions
+
+function compileSQL($outputPath) {
+    // Gather sql files
+    $sqlDirectories = scandir_r("sql");
+
+    $sql = "";
+    foreach($sqlDirectories as $directory) {
+        foreach($directory as $file) {
+            $sql .= file_get_contents($file);
+        }
+    }
+    file_put_contents($outputPath.'MessageHandler.sql', $sql);
+}
+
+function scandir_r($dir) {
+    $dirs = array();
+    foreach (scandir($dir) as $file) {
+        if($file != "." && $file != "..") {
+            if(is_dir($dir."/".$file)) {
+                $dirs[$file] = scandir_r($dir."/".$file);
+            } else {
+                if(substr($file, strlen($file)-3) === "sql") {
+                    $dirs[] = $dir . "/" . $file;
+                }
+            }
+        }
+    }
+    return $dirs;
+}
+
+function copyFilesToBuild($outputPath) {
+    foreach (scandir("copy-to-build") as $file) {
+        if($file != "." && $file != "..") {
+            copy("copy-to-build/".$file, $outputPath.$file);
+        }
+    }
+}
