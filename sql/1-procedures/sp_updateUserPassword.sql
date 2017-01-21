@@ -21,9 +21,10 @@ PROCEDURE sp_updateUserPassword(
   IN i_pass   VARCHAR(32))
   SQL SECURITY DEFINER
   BEGIN
+    DECLARE l_salt CHAR(64);
+
     START TRANSACTION;
 
-    DECLARE l_salt CHAR(64);
     SELECT dtSalt
       FROM tblUser
       WHERE idUser = i_idUser
