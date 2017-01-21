@@ -25,7 +25,8 @@ INSERT INTO tblMessageType (fiLanguage, idMessageType, dtName) VALUES
 
 INSERT INTO tblMessage (dtDescription, fiMessageType, fiUser) VALUES
   ('Deadlock occurred.', 'F', 'admin'),
-  ('Duplicate key', 'A', 'admin');
+  ('Duplicate key', 'A', 'admin'),
+  ('Foreign key failed.', 'F', 'admin');
 
 INSERT INTO tblMessageInLanguage (fiMessage, fiLanguage, dtMessageInLanguage) VALUES
   (1, 'en', 'Failed with deadlock after #! attempts.'),
@@ -33,7 +34,10 @@ INSERT INTO tblMessageInLanguage (fiMessage, fiLanguage, dtMessageInLanguage) VA
   (1, 'fr', 'Échec à cause de deadlock après #! essais.'),
   (2, 'en', 'Duplicate key error encountered.'),
   (2, 'de', 'Doppelter Primärschlüssel gefunden.'),
-  (2, 'fr', 'Clé primaire double.');
+  (2, 'fr', 'Clé primaire double.'),
+  (3, 'en', 'Foreign key not found.'),
+  (3, 'de', 'Fremdschlüssel nicht gefunden.'),
+  (3, 'fr', 'Clé étrangère pas trouvé.');
 
 CALL sp_addOutput('admin', 'de', 'Admin Output to Logfile', @output, @c, @msg);
 CALL sp_addOutputLogfile(@output, '/tmp/adminmsghandler.log', @c, @msg);
