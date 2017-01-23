@@ -35,6 +35,15 @@ PROCEDURE sp_addMessageType(
       SET o_message = @msg;
     END;
 
+    -- Foreign key exception
+    DECLARE EXIT HANDLER FOR 1452
+    BEGIN
+      SET o_code = 1452;
+      CALL sp_getMsg(3, 'en', '', @m);
+      SET o_message = @m;
+    END;
+
+
     SET o_code = 0;
     SET o_message = "OK";
 
