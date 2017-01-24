@@ -1,73 +1,130 @@
 <?php
-define('LE', "\r\n");
-$path = dirname(__FILE__) . "/";
-if(basename(dirname(__FILE__)) != "build") {
-    echo "Please run this script from the `build` directory" . LE;
-    exit(1);
-}
-if (!function_exists('mysqli_connect')) {
-    echo "Please install mysqli to use this script". LE;
-    exit(1);
-}
-if(!file_exists($path.'MessageHandler.sql')) {
-    echo "No install script available (MessageHandler.sql). Have you compiled it yet?" . LE;
-    exit(1);
-}
+new Installer();
 
-echo "To install MessageHandler, you need administrative access to create the databases and users." . LE;
-$user = readline("Please enter a username from an administrative user: ");
-$password = prompt_silent();
+class Installer
+{
+    private $scriptPath;
+    private $mysqlRootUser;
+    private $mysqlExecPath;
 
-$mysqli = @new MySQLi('127.0.0.1', $user, $password, 'mysql');
-if($mysqli->connect_error) {
-    die($mysqli->connect_error . LE);
-}
-
-
-$mysqli->multi_query(file_get_contents($path.'MessageHandler.sql'));
-if(sizeof($mysqli->error_list) > 0) {
-    print_r($mysqli->error_list);
-    echo "Installation was not successful. ". LE;
-    exit(1);
-}
-echo "Installation OK" . LE;
-
-$mysqli = @new MySQLi('127.0.0.1', $user, $password, 'mysql');
-$newPass = prompt_silent("Would you like to change the password for the default MessageHandler user? Leave blank if not. ");
-if(strlen($newPass) > 0) {
-    $pass = $mysqli->real_escape_string($newPass);
-    $mysqli->query("SET PASSWORD FOR MessageHandler@localhost = PASSWORD('".$pass."')");
-    if(sizeof($mysqli->error_list) > 0) {
-        print_r($mysqli->error_list);
-        exit(1);
-    }
-    echo "Updating of password OK." . LE;
-}
-
-exit(0);
-
-function prompt_silent($prompt = "Enter Password: ") {
-    if (preg_match('/^win/i', PHP_OS)) {
-        $vbscript = sys_get_temp_dir() . 'prompt_password.vbs';
-        file_put_contents(
-            $vbscript, 'wscript.echo(InputBox("'
-            . addslashes($prompt)
-            . '", "", "password here"))');
-        $command = "cscript //nologo " . escapeshellarg($vbscript);
-        $password = rtrim(shell_exec($command));
-        unlink($vbscript);
-        return $password;
-    } else {
-        $command = "/usr/bin/env bash -c 'echo OK'";
-        if (rtrim(shell_exec($command)) !== 'OK') {
-            trigger_error("Can't invoke bash");
-            return;
+    function __construct()
+    {
+        if($this->preInstallChecks()) {
+            $this->fetchMysqlExecutableOrElsePrompt();
+            $this->install();
+            $this->askChangePassword();
+        } else {
+            exit(1);
         }
-        $command = "/usr/bin/env bash -c 'read -s -p \""
-            . addslashes($prompt)
-            . "\" mypassword && echo \$mypassword'";
-        $password = rtrim(shell_exec($command));
-        echo "\n";
-        return $password;
+    }
+
+    private function install()
+    {
+        echo "To install MessageHandler, you need administrative access to create the databases and users." . PHP_EOL;
+        $u = readline("Please enter a username from an MySQL admin user: ");
+        if(strlen(trim($u)) === 0) {
+            echo "You have to provide an administrative user to install MessageHandler." . PHP_EOL;
+            exit(1);
+        }
+        $this->mysqlRootUser = escapeshellarg($u);
+        $this->fetchMysqlExecutableOrElsePrompt();
+        $escapedScript = escapeshellarg($this->scriptPath);
+        echo "Please enter the password for the administrative user." . PHP_EOL;
+        exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p < ' . $escapedScript, $discard, $returnval);
+        if($returnval !== 0) {
+            echo "Could not install script. Output from mysql should be above." . PHP_EOL;
+            exit(1);
+        }
+    }
+
+    private function askChangePassword()
+    {
+        $newPass = $this->prompt_silent("Enter the password for the MessageHandler user if you want to change it: ");
+        if (strlen($newPass) > 0) {
+            $pass = escapeshellarg($newPass);
+            $sql = "SET PASSWORD FOR MessageHandler@localhost = PASSWORD(" . $pass . ")";
+            echo "Please enter the password for the administrative user." . PHP_EOL;
+            exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
+            if($exitCode === 0) {
+                echo "Updating of password OK." . PHP_EOL;
+            } else {
+                echo "Updating of password failed. Errors should be above." . PHP_EOL;
+            }
+        }
+    }
+
+    private function preInstallChecks()
+    {
+        $path = dirname(__FILE__) . "/";
+        $ok = true;
+        if (basename(dirname(__FILE__)) != "build") {
+            echo "Please run this script from the `build` directory" . PHP_EOL;
+            $ok = false;
+        }
+        if (!function_exists('mysqli_connect')) {
+            echo "Please install mysqli to use this script" . PHP_EOL;
+            $ok = false;
+        }
+        if (!file_exists($path . 'MessageHandler.sql')) {
+            echo "No install script available (MessageHandler.sql). Have you compiled it yet?" . PHP_EOL;
+            $ok = false;
+        }
+        $this->scriptPath = $path . 'MessageHandler.sql';
+        return $ok;
+    }
+
+    private function fetchMysqlExecutableOrElsePrompt()
+    {
+        if (preg_match('/^win/i', PHP_OS)) {
+            echo "Windows" . PHP_EOL;
+        } else {
+            $path = exec('which mysql');
+            if (strlen(trim($path)) === 0) {
+                $this->mysqlExecPath = $this->askForMysqlExecutable();
+            } else {
+                $this->mysqlExecPath = escapeshellcmd($path);
+            }
+        }
+    }
+
+    private function askForMysqlExecutable($retry = false)
+    {
+        if (!$retry) {
+            echo "Could not find mysql executable in PATH." . PHP_EOL;
+        }
+        $userPath = trim(readline("Please enter the path to a mysql client: "));
+        if (strlen($userPath) === 0 || !file_exists($userPath) || strtolower(basename($userPath, ".exe")) !== "mysql") {
+            echo PHP_EOL . "The path you entered does not seem to be corrent (" . $userPath . "). Try again." . PHP_EOL;
+            return $this->askForMysqlExecutable(true);
+        } else {
+            return escapeshellcmd($userPath);
+        }
+    }
+
+    private function prompt_silent($prompt = "Enter Password: ")
+    {
+        if (preg_match('/^win/i', PHP_OS)) {
+            $vbscript = sys_get_temp_dir() . 'prompt_password.vbs';
+            file_put_contents(
+                $vbscript, 'wscript.echo(InputBox("'
+                . addslashes($prompt)
+                . '", "", "password here"))');
+            $command = "cscript //nologo " . escapeshellarg($vbscript);
+            $password = rtrim(shell_exec($command));
+            unlink($vbscript);
+            return $password;
+        } else {
+            $command = "/usr/bin/env bash -c 'echo OK'";
+            if (rtrim(shell_exec($command)) !== 'OK') {
+                trigger_error("Can't invoke bash");
+                return;
+            }
+            $command = "/usr/bin/env bash -c 'read -s -p \""
+                . addslashes($prompt)
+                . "\" mypassword && echo \$mypassword'";
+            $password = rtrim(shell_exec($command));
+            echo "\n";
+            return $password;
+        }
     }
 }
