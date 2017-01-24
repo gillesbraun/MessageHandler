@@ -1,9 +1,9 @@
 /*----------------------------------------------------------------------------
-| Routine : sp_getMessageLanguages
+| Routine : sp_getMessageTranslations
 | Author(s)  : (c) BTSi Braun Gilles
 | CreateDate : 2016-06-09
 |
-| Description : Returns all translations (idLang, LocalizedLanguage, translation)
+| Description : Returns all translations (idLang, Language, translation)
 |               for the given message.
 |
 | Parameters :
@@ -18,7 +18,7 @@
 |---------------------------------------------------------------------------*/
 DELIMITER ??
 CREATE DEFINER = 'MsgHandler'@'localhost'
-PROCEDURE sp_getMessageLanguages(
+PROCEDURE sp_getMessageTranslations(
   IN  i_idMessage  INT UNSIGNED,
   OUT o_out TEXT)
   SQL SECURITY DEFINER
