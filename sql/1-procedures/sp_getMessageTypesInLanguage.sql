@@ -17,7 +17,7 @@
 |---------------------------------------------------------------------------*/
 DELIMITER ??
 CREATE DEFINER = 'MsgHandler'@'localhost'
-PROCEDURE sp_getMessageTypesInLanguage( -- TODO: replace For by IN
+PROCEDURE sp_getMessageTypesInLanguage(
   IN  i_idLanguage CHAR(2),
   OUT o_out TEXT
 )
