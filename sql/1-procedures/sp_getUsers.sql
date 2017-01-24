@@ -3,7 +3,7 @@
 | Author(s)  : (c) BTSi Braun Gilles
 | CreateDate : 2016-06-09
 |
-| Description : Returns all users with their information.
+| Description : Returns all users with their information except password.
 |
 | Parameters :
 | ------------
