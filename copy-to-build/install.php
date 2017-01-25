@@ -112,7 +112,7 @@ class Installer
             file_put_contents(
                 $vbscript, 'wscript.echo(InputBox("'
                 . addslashes($prompt)
-                . '", "", "password here"))');
+                . '", "", ""))');
             $command = "cscript //nologo " . escapeshellarg($vbscript);
             $password = rtrim(shell_exec($command));
             unlink($vbscript);
