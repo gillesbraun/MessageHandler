@@ -24,7 +24,7 @@ INSERT INTO tblMessageType (fiLanguage, idMessageType, dtName) VALUES
   ('fr', 'F', 'Erreur fatale');
 
 INSERT INTO tblMessage (dtDescription, fiMessageType, fiUser) VALUES
-  ('Deadlock occurred.', 'F', 'admin'),
+  ('Deadlock occurred.', 'A', 'admin'),
   ('Duplicate key', 'A', 'admin'),
   ('Foreign key failed.', 'F', 'admin');
 
