@@ -24,14 +24,14 @@ INSERT INTO tblMessageType (fiLanguage, idMessageType, dtName) VALUES
   ('fr', 'F', 'Erreur fatale');
 
 INSERT INTO tblMessage (dtDescription, fiMessageType, fiUser) VALUES
-  ('Deadlock occurred.', 'A', 'admin'),
+  ('Execution failed.', 'A', 'admin'),
   ('Duplicate key', 'A', 'admin'),
   ('Foreign key failed.', 'F', 'admin');
 
 INSERT INTO tblMessageInLanguage (fiMessage, fiLanguage, dtMessageInLanguage) VALUES
-  (1, 'en', 'Failed with deadlock after #! attempts.'),
-  (1, 'de', 'Fehlgeschlagen wegen Deadlock nach #! Versuchen.'),
-  (1, 'fr', 'Échec à cause de deadlock après #! essais.'),
+  (1, 'en', 'The execution failed after #! attempts.'),
+  (1, 'de', 'Fehlgeschlagen nach #! Versuchen.'),
+  (1, 'fr', 'Échec après #! essais.'),
   (2, 'en', 'Duplicate key error encountered.'),
   (2, 'de', 'Doppelter Primärschlüssel gefunden.'),
   (2, 'fr', 'Clé primaire double.'),
