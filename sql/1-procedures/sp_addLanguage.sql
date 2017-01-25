@@ -43,7 +43,7 @@ PROCEDURE sp_addLanguage(
     DECLARE EXIT HANDLER FOR dup_key
     BEGIN
       SET o_code = 1062;
-      CALL sp_getMsg(2, 'en', '', @msg);
+      CALL sp_getMsg(2, 'en', '', @msg, @result_code, @result_message);
       SET o_message = @msg;
     END;
 
@@ -79,6 +79,6 @@ PROCEDURE sp_addLanguage(
 
     IF t_deadlock_timeout = 1 THEN -- attempt resulted in deadlock
       SET o_code = 1;
-      CALL sp_getMsg(1, 'en', t_attempts, o_message);
+      CALL sp_getMsg(1, 'en', t_attempts, o_message, @result_code, @result_message);
     END IF;
   END ??

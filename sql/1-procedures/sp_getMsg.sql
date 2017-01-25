@@ -50,7 +50,8 @@ PROCEDURE sp_getMsg(
 
         START TRANSACTION;
 
-        CALL sp_getMessageInLanguage(i_idMessage, i_idLanguage, i_replace, o_out);
+        CALL sp_getMessageInLanguage(i_idMessage, i_idLanguage, i_replace, @m);
+        SET o_out = @m;
         CALL sp_handleOutput(i_idMessage, i_replace);
 
         COMMIT;
@@ -65,6 +66,6 @@ PROCEDURE sp_getMsg(
 
     IF t_deadlock_timeout = 1 THEN -- attempt resulted in deadlock
       SET o_code = 1;
-      CALL sp_getMsg(1, 'en', t_attempts, o_message);
+      CALL sp_getMsg(1, 'en', t_attempts, o_message, @result_code, @result_message);
     END IF;
   END ??

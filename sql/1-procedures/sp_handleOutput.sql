@@ -42,7 +42,7 @@ PROCEDURE sp_handleOutput(
         LEAVE output_loop;
       END IF;
 
-      CALL sp_getLanguageOfOutput(l_idOutput, @lang);
+      CALL sp_getLanguageOfOutput(l_idOutput, @lang, @result_code, @result_message);
       CALL sp_getMessageInLanguage(i_idMessage, @lang, i_replace, @msg);
 
       SELECT COUNT(*) FROM tblOutputEmail WHERE fiOutput = l_idOutput INTO l_num_emails;

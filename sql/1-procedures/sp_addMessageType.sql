@@ -34,7 +34,7 @@ PROCEDURE sp_addMessageType(
     DECLARE CONTINUE HANDLER FOR dup
     BEGIN
       SET o_code = 1062;
-      CALL sp_getMsg(2, 'en', '', @msg);
+      CALL sp_getMsg(2, 'en', '', @msg, @result_code, @result_message);
       SET o_message = @msg;
     END;
 
@@ -42,7 +42,7 @@ PROCEDURE sp_addMessageType(
     DECLARE EXIT HANDLER FOR 1452
     BEGIN
       SET o_code = 1452;
-      CALL sp_getMsg(3, 'en', '', @m);
+      CALL sp_getMsg(3, 'en', '', @m, @result_code, @result_message);
       SET o_message = @m;
     END;
 
@@ -77,7 +77,7 @@ PROCEDURE sp_addMessageType(
 
     IF t_deadlock_timeout = 1 THEN -- attempt resulted in deadlock
       SET o_code = 1;
-      CALL sp_getMsg(1, 'en', t_attempts, o_message);
+      CALL sp_getMsg(1, 'en', t_attempts, o_message, @result_code, @result_message);
     END IF;
 
   END ??

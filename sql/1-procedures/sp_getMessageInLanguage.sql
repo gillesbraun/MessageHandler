@@ -64,8 +64,8 @@ PROCEDURE sp_getMessageInLanguage(
                                          1); -- removes the used replacement from replace string
 
       END LOOP;
-      CALL sp_getMessageTypeOfMessage(i_idMessage, @type);
-      CALL sp_getMessageTypeInLanguage(@type, i_idLanguage, @typelang);
+      CALL sp_getMessageTypeOfMessage(i_idMessage, @type, @result_code, @result_message);
+      CALL sp_getMessageTypeInLanguage(@type, i_idLanguage, @typelang, @result_code, @result_message);
       SET o_out = CONCAT(IFNULL(CONCAT(@typelang, ': '), ''),l_message);
     END IF;
   END ??

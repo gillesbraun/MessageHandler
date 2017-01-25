@@ -83,6 +83,6 @@ PROCEDURE sp_checkUserCredentials(
 
     IF t_deadlock_timeout = 1 THEN -- attempt resulted in deadlock
       SET o_code = 1;
-      CALL sp_getMsg(1, 'en', t_attempts, o_message);
+      CALL sp_getMsg(1, 'en', t_attempts, o_message, @result_code, @result_message);
     END IF;
   END ??

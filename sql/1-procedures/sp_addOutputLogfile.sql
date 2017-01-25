@@ -30,7 +30,7 @@ PROCEDURE sp_addOutputLogfile(
     DECLARE EXIT HANDLER FOR 1452
       BEGIN
         SET o_code = 1452;
-        CALL sp_getMsg(3, 'en', '', @m);
+        CALL sp_getMsg(3, 'en', '', @m, @result_code, @result_message);
         SET o_message = @m;
       END;
 
@@ -66,6 +66,6 @@ PROCEDURE sp_addOutputLogfile(
 
     IF t_deadlock_timeout = 1 THEN -- attempt resulted in deadlock
       SET o_code = 1;
-      CALL sp_getMsg(1, 'en', t_attempts, o_message);
+      CALL sp_getMsg(1, 'en', t_attempts, o_message, @result_code, @result_message);
     END IF;
   END ??
