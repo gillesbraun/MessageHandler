@@ -21,7 +21,7 @@ class Installer
     private function install()
     {
         echo "To install MessageHandler, you need administrative access to create the databases and users." . PHP_EOL;
-        $u = readline("Please enter a username from an MySQL admin user: ");
+        $u = self::readinput("Please enter a username from an MySQL admin user: ");
         if(strlen(trim($u)) === 0) {
             echo "You have to provide an administrative user to install MessageHandler." . PHP_EOL;
             exit(1);
@@ -76,7 +76,11 @@ class Installer
     private function fetchMysqlExecutableOrElsePrompt()
     {
         if (preg_match('/^win/i', PHP_OS)) {
-            echo "Windows" . PHP_EOL;
+            $path = exec('where mysql', $discard, $returnval);
+            if($returnval !== 0) {
+                $path = $this->askForMysqlExecutable();
+            }
+            $this->mysqlExecPath = escapeshellcmd($path);
         } else {
             $path = exec('which mysql');
             if (strlen(trim($path)) === 0) {
@@ -92,7 +96,7 @@ class Installer
         if (!$retry) {
             echo "Could not find mysql executable in PATH." . PHP_EOL;
         }
-        $userPath = trim(readline("Please enter the path to a mysql client: "));
+        $userPath = trim(self::readinput("Please enter the path to a mysql client: "));
         if (strlen($userPath) === 0 || !file_exists($userPath) || strtolower(basename($userPath, ".exe")) !== "mysql") {
             echo PHP_EOL . "The path you entered does not seem to be corrent (" . $userPath . "). Try again." . PHP_EOL;
             return $this->askForMysqlExecutable(true);
@@ -125,6 +129,15 @@ class Installer
             $password = rtrim(shell_exec($command));
             echo "\n";
             return $password;
+        }
+    }
+
+    private static function readinput($text = "") {
+        if (preg_match('/^win/i', PHP_OS)) {
+            echo $text;
+            return stream_get_line(STDIN, 1024, PHP_EOL);
+        } else {
+            return readline($text);
         }
     }
 }
