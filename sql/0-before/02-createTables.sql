@@ -5,6 +5,24 @@ CREATE TABLE tblLanguage (
   dtCreatedTS     DATETIME DEFAULT CURRENT_TIMESTAMP,
   dtUpdatedTS     DATETIME DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 );
+DELIMITER //
+CREATE TRIGGER tr_tblLanguage_bu BEFORE UPDATE ON tblLanguage FOR EACH ROW
+  BEGIN
+    SET NEW.dtName = REPLACE(NEW.dtName, '^', '');
+    SET NEW.dtName = REPLACE(NEW.dtName, '~', '');
+    SET NEW.dtLocalizedName = REPLACE(NEW.dtLocalizedName, '^', '');
+    SET NEW.dtLocalizedName = REPLACE(NEW.dtLocalizedName, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblLanguage_bi BEFORE INSERT ON tblLanguage FOR EACH ROW
+  BEGIN
+    SET NEW.dtName = REPLACE(NEW.dtName, '^', '');
+    SET NEW.dtName = REPLACE(NEW.dtName, '~', '');
+    SET NEW.dtLocalizedName = REPLACE(NEW.dtLocalizedName, '^', '');
+    SET NEW.dtLocalizedName = REPLACE(NEW.dtLocalizedName, '~', '');
+  END//
+DELIMITER ;
+
 
 CREATE TABLE tblMessageType (
   idMessageType CHAR(1),
@@ -20,8 +38,21 @@ CREATE TABLE tblMessageType (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
-CREATE TRIGGER tblMessageType_bu BEFORE UPDATE ON tblMessageType FOR EACH ROW
-  SET NEW.dtUpdatedTS = CURRENT_TIMESTAMP;
+
+DELIMITER //
+CREATE TRIGGER tr_tblMessageType_bu BEFORE UPDATE ON tblMessageType FOR EACH ROW
+  BEGIN
+    SET NEW.dtName = REPLACE(NEW.dtName, '^', '');
+    SET NEW.dtName = REPLACE(NEW.dtName, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblMessageType_bi BEFORE INSERT ON tblMessageType FOR EACH ROW
+  BEGIN
+    SET NEW.dtName = REPLACE(NEW.dtName, '^', '');
+    SET NEW.dtName = REPLACE(NEW.dtName, '~', '');
+  END//
+DELIMITER ;
+
 
 CREATE TABLE tblUser (
   idUser         VARCHAR(32) PRIMARY KEY,
@@ -30,6 +61,20 @@ CREATE TABLE tblUser (
   dtIsAdmin      BOOLEAN   DEFAULT FALSE,
   dtRegisteredTS TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+DELIMITER //
+CREATE TRIGGER tr_tblUser_bu BEFORE UPDATE ON tblUser FOR EACH ROW
+  BEGIN
+    SET NEW.idUser = REPLACE(NEW.idUser, '^', '');
+    SET NEW.idUser = REPLACE(NEW.idUser, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblUser_bi BEFORE INSERT ON tblUser FOR EACH ROW
+  BEGIN
+    SET NEW.idUser = REPLACE(NEW.idUser, '^', '');
+    SET NEW.idUser = REPLACE(NEW.idUser, '~', '');
+  END//
+DELIMITER ;
 
 CREATE TABLE tblOutput (
   idOutput    INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -52,6 +97,21 @@ CREATE TABLE tblOutput (
     ON DELETE CASCADE
 );
 
+DELIMITER //
+CREATE TRIGGER tr_tblOutput_bu BEFORE UPDATE ON tblOutput FOR EACH ROW
+  BEGIN
+    SET NEW.dtName = REPLACE(NEW.dtName, '^', '');
+    SET NEW.dtName = REPLACE(NEW.dtName, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblOutput_bi BEFORE INSERT ON tblOutput FOR EACH ROW
+  BEGIN
+    SET NEW.dtName = REPLACE(NEW.dtName, '^', '');
+    SET NEW.dtName = REPLACE(NEW.dtName, '~', '');
+  END//
+DELIMITER ;
+
+
 CREATE TABLE tblOutputEmail (
   idOutputEmail     INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   fiOutput    INT UNSIGNED NOT NULL,
@@ -65,6 +125,25 @@ CREATE TABLE tblOutputEmail (
     ON DELETE CASCADE
 );
 
+DELIMITER //
+CREATE TRIGGER tr_tblOutputEmail_bu BEFORE UPDATE ON tblOutputEmail FOR EACH ROW
+  BEGIN
+    SET NEW.dtSubject = REPLACE(NEW.dtSubject, '^', '');
+    SET NEW.dtSubject = REPLACE(NEW.dtSubject, '~', '');
+    SET NEW.dtRecipient = REPLACE(NEW.dtRecipient, '^', '');
+    SET NEW.dtRecipient = REPLACE(NEW.dtRecipient, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblOutputEmail_bi BEFORE INSERT ON tblOutputEmail FOR EACH ROW
+  BEGIN
+    SET NEW.dtSubject = REPLACE(NEW.dtSubject, '^', '');
+    SET NEW.dtSubject = REPLACE(NEW.dtSubject, '~', '');
+    SET NEW.dtRecipient = REPLACE(NEW.dtRecipient, '^', '');
+    SET NEW.dtRecipient = REPLACE(NEW.dtRecipient, '~', '');
+  END//
+DELIMITER ;
+
+
 CREATE TABLE tblPendingEmail (
   idPendingLog INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   fiOutputEmail INT UNSIGNED NOT NULL,
@@ -76,6 +155,19 @@ CREATE TABLE tblPendingEmail (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+DELIMITER //
+CREATE TRIGGER tr_tblPendingEmail_bu BEFORE UPDATE ON tblPendingEmail FOR EACH ROW
+  BEGIN
+    SET NEW.dtBody = REPLACE(NEW.dtBody, '^', '');
+    SET NEW.dtBody = REPLACE(NEW.dtBody, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblPendingEmail_bi BEFORE INSERT ON tblPendingEmail FOR EACH ROW
+  BEGIN
+    SET NEW.dtBody = REPLACE(NEW.dtBody, '^', '');
+    SET NEW.dtBody = REPLACE(NEW.dtBody, '~', '');
+  END//
+DELIMITER ;
 
 CREATE TABLE tblOutputLogfile (
   idOutputLogfile INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -89,6 +181,21 @@ CREATE TABLE tblOutputLogfile (
     ON DELETE CASCADE
 );
 
+DELIMITER //
+CREATE TRIGGER tr_tblOutputLogfile_bu BEFORE UPDATE ON tblOutputLogfile FOR EACH ROW
+  BEGIN
+    SET NEW.dtPath = REPLACE(NEW.dtPath, '^', '');
+    SET NEW.dtPath = REPLACE(NEW.dtPath, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblOutputLogfile_bi BEFORE INSERT ON tblOutputLogfile FOR EACH ROW
+  BEGIN
+    SET NEW.dtPath = REPLACE(NEW.dtPath, '^', '');
+    SET NEW.dtPath = REPLACE(NEW.dtPath, '~', '');
+  END//
+DELIMITER ;
+
+
 CREATE TABLE tblPendingLog (
   idPendingLog INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
   dtMsg TEXT NOT NULL,
@@ -100,6 +207,21 @@ CREATE TABLE tblPendingLog (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+DELIMITER //
+CREATE TRIGGER tr_tblPendingLog_bu BEFORE UPDATE ON tblPendingLog FOR EACH ROW
+  BEGIN
+    SET NEW.dtMsg = REPLACE(NEW.dtMsg, '^', '');
+    SET NEW.dtMsg = REPLACE(NEW.dtMsg, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblPendingLog_bi BEFORE INSERT ON tblPendingLog FOR EACH ROW
+  BEGIN
+    SET NEW.dtMsg = REPLACE(NEW.dtMsg, '^', '');
+    SET NEW.dtMsg = REPLACE(NEW.dtMsg, '~', '');
+  END//
+DELIMITER ;
+
 
 CREATE TABLE tblOutputTwitter(
   idOutputTwitter INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -149,6 +271,20 @@ CREATE TABLE tblMessage (
     ON DELETE SET NULL
 );
 
+DELIMITER //
+CREATE TRIGGER tr_tblMessage_bu BEFORE UPDATE ON tblMessage FOR EACH ROW
+  BEGIN
+    SET NEW.dtDescription = REPLACE(NEW.dtDescription, '^', '');
+    SET NEW.dtDescription = REPLACE(NEW.dtDescription, '~', '');
+  END//
+
+CREATE TRIGGER tr_tblMessage_bi BEFORE INSERT ON tblMessage FOR EACH ROW
+  BEGIN
+    SET NEW.dtDescription = REPLACE(NEW.dtDescription, '^', '');
+    SET NEW.dtDescription = REPLACE(NEW.dtDescription, '~', '');
+  END//
+DELIMITER ;
+
 CREATE TABLE tblMessageOutput (
   fiMessage INT UNSIGNED,
   fiOutput  INT UNSIGNED,
@@ -187,14 +323,15 @@ CREATE TABLE tblMessageInLanguage (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
 DELIMITER //
-CREATE TRIGGER tblMessageInLanguage_bu BEFORE UPDATE ON tblMessageInLanguage FOR EACH ROW
+CREATE TRIGGER tr_tblMessageInLanguage_bu BEFORE UPDATE ON tblMessageInLanguage FOR EACH ROW
   BEGIN
     SET NEW.dtMessageInLanguage = REPLACE(NEW.dtMessageInLanguage, '^', '');
     SET NEW.dtMessageInLanguage = REPLACE(NEW.dtMessageInLanguage, '~', '');
   END//
 
-CREATE TRIGGER tblMessageInLanguage_bi BEFORE INSERT ON tblMessageInLanguage FOR EACH ROW
+CREATE TRIGGER tr_tblMessageInLanguage_bi BEFORE INSERT ON tblMessageInLanguage FOR EACH ROW
   BEGIN
     SET NEW.dtMessageInLanguage = REPLACE(NEW.dtMessageInLanguage, '^', '');
     SET NEW.dtMessageInLanguage = REPLACE(NEW.dtMessageInLanguage, '~', '');
