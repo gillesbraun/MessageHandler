@@ -1,3 +1,6 @@
+SET NAMES 'utf8';
+SET CHARACTER SET utf8;
+
 DROP DATABASE IF EXISTS MessageHandler;
 CREATE DATABASE MessageHandler;
 USE MessageHandler;
