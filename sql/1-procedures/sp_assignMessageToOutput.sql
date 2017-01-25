@@ -32,6 +32,9 @@ PROCEDURE sp_assignMessageToOutput(
   OUT o_code        SMALLINT UNSIGNED,
   OUT o_message     VARCHAR(100))
   BEGIN
+    DECLARE t_deadlock_timeout INT DEFAULT 0;
+    DECLARE t_attempts INT DEFAULT 0;
+
     DECLARE dup CONDITION FOR 1062;
     DECLARE CONTINUE HANDLER FOR dup
     BEGIN
@@ -50,7 +53,35 @@ PROCEDURE sp_assignMessageToOutput(
 
     SET o_code = 0;
     SET o_message = "OK";
+    -- Deadlock retry loop
+    tra_loop:WHILE (t_attempts < 3) DO
+      BEGIN
+        DECLARE deadlock_detected CONDITION FOR 1213;
+        DECLARE timeout_detected CONDITION FOR 1205;
+        DECLARE EXIT HANDLER FOR deadlock_detected, timeout_detected
+        BEGIN
+          ROLLBACK;
+          SET t_deadlock_timeout=1;
+        END;
+        SET t_deadlock_timeout=0;
 
-    INSERT INTO tblMessageOutput (fiMessage, fiOutput) VALUES
-    (i_message, i_output);
+        START TRANSACTION;
+
+        INSERT INTO tblMessageOutput (fiMessage, fiOutput) VALUES
+        (i_message, i_output);
+
+        COMMIT;
+
+      END;
+      IF t_deadlock_timeout = 0 THEN -- No deadlock or timeout, exit loop
+        LEAVE tra_loop;
+      ELSE
+        SET t_attempts = t_attempts + 1;
+      END IF;
+    END WHILE tra_loop;
+
+    IF t_deadlock_timeout = 1 THEN -- attempt resulted in deadlock
+      SET o_code = 1;
+      CALL sp_getMsg(1, 'en', t_attempts, o_message);
+    END IF;
   END ??
