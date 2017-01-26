@@ -44,6 +44,9 @@ PROCEDURE sp_getMessageInLanguage(
       SET o_out = CONCAT('FATAL ERROR: Message has no translation for language ', i_idLanguage, '!');
     ELSE
       search_loop: LOOP
+        IF i_replace IS NULL THEN
+          LEAVE search_loop;
+        END IF;
         SET l_positionM = LOCATE('#!', l_message); -- searches for the first occurence of delimiter in msg
         SET l_positionR = LOCATE('#!', i_replace); -- searches for first occurence of delimiter in replace string
         IF (l_positionM = 0) -- When there is no placeholder in message left
