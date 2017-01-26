@@ -1,14 +1,10 @@
 <?php
-$user = "MessageHandler";
-$password = "MSGHANDLER";
-
 date_default_timezone_set('Europe/Luxembourg');
 
 require "vendor/autoload.php";
 use Abraham\TwitterOAuth\TwitterOAuth;
 
-define('FROM_EMAIL', 'someone@example.com');
-define('debug', true);
+require 'config.php';
 
 function csv2array($text, $preferTwoDimensions = false) {
     $result = array();

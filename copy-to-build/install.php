@@ -1,4 +1,5 @@
 <?php
+chdir(realpath(dirname(__FILE__)));
 new Installer();
 
 class Installer
@@ -41,8 +42,8 @@ class Installer
     {
         $newPass = $this->prompt_silent("Enter the password for the MessageHandler user if you want to change it: ");
         if (strlen($newPass) > 0) {
-            $pass = escapeshellarg($newPass);
-            $sql = "SET PASSWORD FOR MessageHandler@localhost = PASSWORD(" . $pass . ")";
+            self::saveVariableToConfig("password", $newPass);
+            $sql = "SET PASSWORD FOR MessageHandler@localhost = PASSWORD('$newPass')";
             echo "Please enter the password for the administrative user." . PHP_EOL;
             exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
             if($exitCode === 0) {
@@ -50,6 +51,8 @@ class Installer
             } else {
                 echo "Updating of password failed. Errors should be above." . PHP_EOL;
             }
+        } else {
+            self::saveVariableToConfig("password", "MSGHANDLER");
         }
     }
 
@@ -80,15 +83,20 @@ class Installer
             if($returnval !== 0) {
                 $path = $this->askForMysqlExecutable();
             }
-            $this->mysqlExecPath = escapeshellcmd($path);
+            $this->setMysqlExecPath($path);
         } else {
             $path = exec('which mysql');
             if (strlen(trim($path)) === 0) {
-                $this->mysqlExecPath = $this->askForMysqlExecutable();
+                $this->setMysqlExecPath($this->askForMysqlExecutable());
             } else {
-                $this->mysqlExecPath = escapeshellcmd($path);
+                $this->setMysqlExecPath($path);
             }
         }
+    }
+
+    private function setMysqlExecPath($p) {
+        self::saveVariableToConfig("mysqlExecPath", $p);
+        $this->mysqlExecPath = escapeshellcmd($p);
     }
 
     private function askForMysqlExecutable($retry = false)
@@ -101,7 +109,7 @@ class Installer
             echo PHP_EOL . "The path you entered does not seem to be corrent (" . $userPath . "). Try again." . PHP_EOL;
             return $this->askForMysqlExecutable(true);
         } else {
-            return escapeshellcmd($userPath);
+            return $userPath;
         }
     }
 
@@ -138,6 +146,21 @@ class Installer
             return stream_get_line(STDIN, 1024, PHP_EOL);
         } else {
             return readline($text);
+        }
+    }
+
+    private static function saveVariableToConfig($var, $val) {
+        if(!file_exists('config.php')) {
+            echo "config.php not present, aborting" .PHP_EOL;
+            exit(2);
+        }
+        $current_content = file_get_contents('config.php');
+        // Replace single backslash with double
+        $val = str_replace('\\', '\\\\', $val);
+        // Replace quotations
+        $val = str_replace('"', '', $val);
+        if(strpos($current_content, '$'.$var) === false) {
+            file_put_contents('config.php', '$'.$var.' = "'. $val .'";' . PHP_EOL, FILE_APPEND);
         }
     }
 }
