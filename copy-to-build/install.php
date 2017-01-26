@@ -21,6 +21,7 @@ class Installer
 
     private function install()
     {
+        $this->recreateConfig();
         echo "To install MessageHandler, you need administrative access to create the databases and users." . PHP_EOL;
         $u = self::readinput("Please enter a username from an MySQL admin user: ");
         if(strlen(trim($u)) === 0) {
@@ -43,8 +44,13 @@ class Installer
         $newPass = $this->prompt_silent("Enter the password for the MessageHandler user if you want to change it: ");
         if (strlen($newPass) > 0) {
             self::saveVariableToConfig("password", $newPass);
+            $backupPass = md5($newPass . time());
+            self::saveVariableToConfig("backupPassword", $backupPass);
             $sql = "SET PASSWORD FOR MessageHandler@localhost = PASSWORD('$newPass')";
-            echo "Please enter the password for the administrative user." . PHP_EOL;
+            echo "Please enter the password for the administrative user twice for password changing." . PHP_EOL;
+            exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
+
+            $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('$backupPass')";
             exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
             if($exitCode === 0) {
                 echo "Updating of password OK." . PHP_EOL;
@@ -53,6 +59,9 @@ class Installer
             }
         } else {
             self::saveVariableToConfig("password", "MSGHANDLER");
+            self::saveVariableToConfig("backupPassword", md5(time()));
+            $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('".md5(time())."')";
+            exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
         }
     }
 
@@ -161,6 +170,24 @@ class Installer
         $val = str_replace('"', '', $val);
         if(strpos($current_content, '$'.$var) === false) {
             file_put_contents('config.php', '$'.$var.' = "'. $val .'";' . PHP_EOL, FILE_APPEND);
+        }
+    }
+
+    private function recreateConfig() {
+        if(file_exists('config.php')) {
+            unlink('config.php');
+            file_put_contents('config.php', '<?php
+// Specify your messagehandler user and password here:
+$user = "MessageHandler";
+
+// For sending emails, this is the address that the email is sent from
+define(\'FROM_EMAIL\', \'someone@example.com\');
+
+// Enable or disable debugging, verbosity increased if true
+// Only enable this if you know what you are doing
+define(\'debug\', false);
+');
+            chmod('config.php', 0600);
         }
     }
 }
