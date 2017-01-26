@@ -49,7 +49,7 @@ GRANT EXECUTE ON PROCEDURE MessageHandler.sp_removeMessageFromOutput TO MessageH
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateLanguageLocalizedName TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateLanguageName TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateMessageDescription TO MessageHandler@localhost;
-GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateMessageInLanguage TO MessageHandler@localhost;
+GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateMessageTranslation TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateMessageType TO MessageHandler@localhost;
 
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_updateUserIsAdmin TO MessageHandler@localhost;

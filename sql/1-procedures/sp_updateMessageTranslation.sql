@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
-| Routine : sp_updateMessageInLanguage
+| Routine : sp_updateMessageTranslation
 | Author(s)  : (c) BTSi Braun Gilles
 | CreateDate : 2016-06-09
 |
@@ -17,7 +17,7 @@
 |---------------------------------------------------------------------------*/
 DELIMITER ??
 CREATE DEFINER = 'MsgHandler'@'localhost'
-PROCEDURE sp_updateMessageInLanguage(
+PROCEDURE sp_updateMessageTranslation(
   IN i_idMessage  INT UNSIGNED,
   IN i_idLanguage CHAR(2),
   IN i_message    VARCHAR(500),
