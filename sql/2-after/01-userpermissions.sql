@@ -38,7 +38,7 @@ GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getOutputsEmail TO MessageHandler@l
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getOutputsTwitter TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getOutputsLogfile TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getPendingEmail TO MessageHandler@localhost;
-GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getPendingLog TO MessageHandler@localhost;
+GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getPendingLogfile TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getPendingTwitter TO MessageHandler@localhost;
 GRANT EXECUTE ON PROCEDURE MessageHandler.sp_getUsers TO MessageHandler@localhost;
 -- sp_handleOutput

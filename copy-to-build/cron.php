@@ -38,11 +38,9 @@ function email($to, $subject, $text) {
 }
 
 function twitter($consumerKey, $consumerSecret, $AccessToken, $AccessTokenSecret, $message) {
-    /*
     $connection = new TwitterOAuth($consumerKey, $consumerSecret, $AccessToken, $AccessTokenSecret);
     $content = $connection->get("account/verify_credentials");
     $statuses = $connection->post("statuses/update", ["status" => $message]);
-    */
     echo "Sending tweet" . "\n";
 }
 
@@ -56,7 +54,7 @@ function logfile($file, $text) {
 function doLogFiles(MySQLi $mysqli) {
     //get logs to write
 
-    $mysqli->query('CALL sp_getPendingLog(@r)');
+    $mysqli->query('CALL sp_getPendingLogfile(@r, @c, @m)');
     $res = $mysqli->query('SELECT @r');
     if($res == false) {
         die('Something failed.');
@@ -73,7 +71,7 @@ function doLogFiles(MySQLi $mysqli) {
 function doEmails(MySQLi $mysqli) {
     // get emails to send
 
-    $mysqli->query('CALL sp_getPendingEmail(@r)');
+    $mysqli->query('CALL sp_getPendingEmail(@r, @c, @m)');
     $res = $mysqli->query('SELECT @r');
     if($res == false) {
         die('Something failed.');
@@ -88,7 +86,7 @@ function doEmails(MySQLi $mysqli) {
 function doTwitters(MySQLi $mysqli) {
     // get emails to send
 
-    $mysqli->query('CALL sp_getPendingTwitter(@r)');
+    $mysqli->query('CALL sp_getPendingTwitter(@r, @c, @m)');
     $res = $mysqli->query('SELECT @r');
     if($res == false) {
         die('Something failed.');

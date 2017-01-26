@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
-| Routine : sp_getPendingLog
+| Routine : sp_getPendingLogfile
 | Author(s)  : (c) BTSi Braun Gilles
 | CreateDate : 2016-06-09
 |
@@ -17,7 +17,7 @@
 |---------------------------------------------------------------------------*/
 DELIMITER ??
 CREATE DEFINER = 'MsgHandler'@'localhost'
-PROCEDURE sp_getPendingLog(
+PROCEDURE sp_getPendingLogfile(
   OUT o_out TEXT,
   OUT o_code        SMALLINT UNSIGNED,
   OUT o_message     VARCHAR(100))
