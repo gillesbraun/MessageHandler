@@ -26,6 +26,14 @@ PROCEDURE sp_updateMessageDescription(
     DECLARE t_deadlock_timeout INT DEFAULT 0;
     DECLARE t_attempts INT DEFAULT 0;
 
+    DECLARE dup_key CONDITION FOR 1062;
+    DECLARE EXIT HANDLER FOR dup_key
+    BEGIN
+      SET o_code = 1062;
+      CALL sp_getMsg(2, 'en', '', @msg, @result_code, @result_message);
+      SET o_message = @msg;
+    END;
+
     SET o_code = 0;
     SET o_message = "OK";
 
