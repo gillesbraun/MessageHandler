@@ -1,4 +1,5 @@
 <?php
+chdir(realpath(dirname(__FILE__)));
 $path = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR;
 if(!file_exists($path.'config.php')) {
     echo "could not find config in ".$path.PHP_EOL;

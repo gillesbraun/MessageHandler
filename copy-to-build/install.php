@@ -65,11 +65,12 @@ class Installer
     }
 
     private function changeBackupPassword() {
-        $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('".md5(time())."')";
+        $newPass = md5(time());
+        $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('$newPass')";
         exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
         if($exitCode === 0) {
             echo "Updating of password for backup user OK." . PHP_EOL;
-            self::saveVariableToConfig("backupPassword", md5(time()));
+            self::saveVariableToConfig("backupPassword", $newPass);
         } else {
             echo "Updating of password for backup user failed. Errors should be above." . PHP_EOL;
         }
