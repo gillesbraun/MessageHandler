@@ -43,25 +43,35 @@ class Installer
     {
         $newPass = $this->prompt_silent("Enter the password for the MessageHandler user if you want to change it: ");
         if (strlen($newPass) > 0) {
-            self::saveVariableToConfig("password", $newPass);
-            $backupPass = md5($newPass . time());
-            self::saveVariableToConfig("backupPassword", $backupPass);
-            $sql = "SET PASSWORD FOR MessageHandler@localhost = PASSWORD('$newPass')";
-            echo "Please enter the password for the administrative user twice for password changing." . PHP_EOL;
-            exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
-
-            $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('$backupPass')";
-            exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
-            if($exitCode === 0) {
-                echo "Updating of password OK." . PHP_EOL;
-            } else {
-                echo "Updating of password failed. Errors should be above." . PHP_EOL;
-            }
+            $this->changePassword($newPass);
         } else {
             self::saveVariableToConfig("password", "MSGHANDLER");
+            $this->changeBackupPassword();
+        }
+    }
+
+    private function changePassword($newPass) {
+        $backupPass = md5(time());
+        $sql = "SET PASSWORD FOR MessageHandler@localhost = '$newPass'; SET PASSWORD FOR MessageHandlerBackup@localhost = '$backupPass';";
+        echo "Please enter the password for the administrative user to change password." . PHP_EOL;
+        exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
+        if($exitCode === 0) {
+            echo "Updating of password OK." . PHP_EOL;
+            self::saveVariableToConfig("password", $newPass);
+            self::saveVariableToConfig("backupPassword", $backupPass);
+        } else {
+            echo "Updating of password failed. Errors should be above." . PHP_EOL;
+        }
+    }
+
+    private function changeBackupPassword() {
+        $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('".md5(time())."')";
+        exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
+        if($exitCode === 0) {
+            echo "Updating of password for backup user OK." . PHP_EOL;
             self::saveVariableToConfig("backupPassword", md5(time()));
-            $sql = "SET PASSWORD FOR MessageHandlerBackup@localhost = PASSWORD('".md5(time())."')";
-            exec($this->mysqlExecPath . ' -u' . $this->mysqlRootUser . ' -p -e "'. $sql .'"', $discard, $exitCode);
+        } else {
+            echo "Updating of password for backup user failed. Errors should be above." . PHP_EOL;
         }
     }
 
@@ -177,6 +187,7 @@ class Installer
         if(file_exists('config.php')) {
             unlink('config.php');
             file_put_contents('config.php', '<?php
+date_default_timezone_set("Europe/Luxembourg");
 // Specify your messagehandler user and password here:
 $user = "MessageHandler";
 
