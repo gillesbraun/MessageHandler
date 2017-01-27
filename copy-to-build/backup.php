@@ -26,7 +26,7 @@ if(!file_exists($mysqldump)) {
 $mysqldump = escapeshellcmd($mysqldump);
 $user = escapeshellarg($user);
 
-$filename = "MessageHandler-backup-".date("Y-m-d_H-i-s").".sql";
+$filename = "backups".DIRECTORY_SEPARATOR."MessageHandler-backup-".date("Y-m-d_H-i-s").".sql";
 
 $exec = $mysqldump . " -uMessageHandlerBackup ";
 if(!empty($backupPassword)) {

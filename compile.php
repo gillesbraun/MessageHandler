@@ -3,7 +3,7 @@
 if(!is_dir('build')) {
     mkdir('build');
 }
-$path = 'build/';
+$path = 'build' . DIRECTORY_SEPARATOR;
 
 // Compile SQL
 compileSQL($path);
@@ -11,6 +11,9 @@ compileSQL($path);
 // Copy additional files to build dir
 copyFilesToBuild($path);
 
+if(!is_dir($path."backups")) {
+    mkdir($path."backups", 0700);
+}
 
 // Functions
 
