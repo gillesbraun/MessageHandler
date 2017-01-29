@@ -1,5 +1,8 @@
 # MessageHandler
 
+[![build status](https://gitlab.com/gillesbraun/MessageHandler/badges/master/build.svg)](https://gitlab.com/gillesbraun/MessageHandler/commits/master)
+[Download latest build](https://gitlab.com/gillesbraun/MessageHandler/builds/artifacts/master/download?job=build)
+
 ## 1. Introduction
 
 MessageHandler is a database application, which can be used to save different kinds of messages. They can each be translated in any language you want. This can be used as internationalization for another project. Some basics you have to understand before you can get started:
