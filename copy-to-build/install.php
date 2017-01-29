@@ -11,6 +11,7 @@ class Installer
     function __construct()
     {
         if($this->preInstallChecks()) {
+            $this->recreateConfig();
             $this->fetchMysqlExecutableOrElsePrompt();
             $this->install();
             $this->askChangePassword();
@@ -21,7 +22,6 @@ class Installer
 
     private function install()
     {
-        $this->recreateConfig();
         echo "To install MessageHandler, you need administrative access to create the databases and users." . PHP_EOL;
         $u = self::readinput("Please enter a username from an MySQL admin user: ");
         if(strlen(trim($u)) === 0) {
@@ -187,7 +187,8 @@ class Installer
     private function recreateConfig() {
         if(file_exists('config.php')) {
             unlink('config.php');
-            file_put_contents('config.php', '<?php
+        }
+        file_put_contents('config.php', '<?php
 date_default_timezone_set("Europe/Luxembourg");
 // Specify your messagehandler user and password here:
 $user = "MessageHandler";
@@ -199,7 +200,7 @@ define(\'FROM_EMAIL\', \'someone@example.com\');
 // Only enable this if you know what you are doing
 define(\'debug\', false);
 ');
-            chmod('config.php', 0600);
-        }
+        chmod('config.php', 0600);
+
     }
 }
