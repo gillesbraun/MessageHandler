@@ -1,6 +1,7 @@
 
 DELIMITER ;
 
+CALL sp_addUser('admin', 'q1w2e3!', 1, @c, @m);
 -- Default Values
 INSERT INTO tblLanguage (idLanguage, dtName, dtLocalizedName) VALUES
   ('en', 'English', 'English'),
@@ -35,3 +36,4 @@ INSERT INTO tblMessageInLanguage (fiMessage, fiLanguage, dtMessageInLanguage) VA
   (3, 'en', 'Foreign key not found.'),
   (3, 'de', 'Fremdschlüssel nicht gefunden.'),
   (3, 'fr', 'Clé étrangère pas trouvé.');
+
