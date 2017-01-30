@@ -43,7 +43,7 @@ PROCEDURE sp_getOutputsTwitter(
         START TRANSACTION;
 
         SELECT GROUP_CONCAT(
-            CONCAT_WS('~', idOutputTwitter, dtConsumerKey, dtConsumerSecret, dtAccessToken, dtConsumerSecret)
+            CONCAT_WS('~', idOutputTwitter, dtConsumerKey, dtConsumerSecret, dtAccessToken, dtAccessTokenSecret)
             SEPARATOR '^')
         FROM tblOutputTwitter
         WHERE fiOutput = i_idOutput
