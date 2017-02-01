@@ -47,12 +47,12 @@ PROCEDURE sp_handleOutput(
 
       SELECT COUNT(*) FROM tblOutputEmail WHERE fiOutput = l_idOutput INTO l_num_emails;
       IF l_num_emails > 0 THEN
-        CALL sp_handleLogfile(l_idOutput, @msg);
+        CALL sp_handleEmail(l_idOutput, @msg);
       END IF;
 
       SELECT COUNT(*) FROM tblOutputLogfile WHERE fiOutput = l_idOutput INTO l_num_logs;
       IF l_num_logs > 0 THEN
-        CALL sp_handleEmail(l_idOutput, @msg);
+        CALL sp_handleLogfile(l_idOutput, @msg);
       END IF;
 
       SELECT COUNT(*) FROM tblOutputTwitter WHERE fiOutput = l_idOutput INTO l_num_twitters;
